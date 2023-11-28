@@ -1,4 +1,4 @@
-class CreateAssessmentOptions < ActiveRecord::Migration[7.0]
+class CreateAssessmentOptions < ActiveRecord::Migration[6.1]
   def change
     create_table :assessment_options do |t|
       t.references :assessment_question, null: false, foreign_key: true
