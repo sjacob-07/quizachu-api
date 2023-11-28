@@ -1,4 +1,4 @@
-class CreateAssessmentQuestions < ActiveRecord::Migration[7.0]
+class CreateAssessmentQuestions < ActiveRecord::Migration[6.1]
   def change
     create_table :assessment_questions do |t|
       t.text :question

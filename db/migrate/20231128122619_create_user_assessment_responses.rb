@@ -1,4 +1,4 @@
-class CreateUserAssessmentResponses < ActiveRecord::Migration[7.0]
+class CreateUserAssessmentResponses < ActiveRecord::Migration[6.1]
   def change
     create_table :user_assessment_responses do |t|
       t.references :user, null: false, foreign_key: true
