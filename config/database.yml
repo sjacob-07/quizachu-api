@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: quizachu_api_production
-  username: quizachu_api
+  username: ubuntu
   password: <%= ENV["QUIZACHU_API_DATABASE_PASSWORD"] %>
