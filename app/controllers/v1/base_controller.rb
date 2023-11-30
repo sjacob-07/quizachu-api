@@ -25,10 +25,29 @@ class V1::BaseController < ActionController::API
 
     def get_current_user
         auth_token = params[:gauth_id]
-        @current_user = User.where(external_uid: auth_token).first
-        if @current_user.present?
-            return @current_user
-        end
+		user_id = params[:user_id]
 
+		puts params
+		if !auth_token.present? && !user_id.present?
+			render json: {is_success: false, data: {}, message: 'User Identifier not found'}, status: 422
+		end
+
+		if auth_token.present?
+			@current_user = User.where(external_uid: auth_token).first
+			if @current_user.present?
+				return @current_user
+			else
+				render json: {is_success: false, data: {}, message: 'User not found'}, status: 422
+			end
+		end
+
+		if user_id.present?
+			@current_user = User.where(id: user_id).first
+			if @current_user.present?
+				return @current_user
+			else
+				render json: {is_success: false, data: {}, message: 'User not found'}, status: 422
+			end
+		end
     end
 end

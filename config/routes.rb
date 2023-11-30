@@ -5,9 +5,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   namespace :v1, defaults: {format: :json} do
-    post 'users', to: 'users#create'
+    post 'users', to: 'users#update'
+    get 'user/:user_id/dashboard', to: 'users#dashboard'
+    get '/assessments', to: 'assessments#index'
   end
-
-
-
 end

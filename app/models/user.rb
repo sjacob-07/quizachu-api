@@ -3,6 +3,7 @@ class User < ApplicationRecord
     
     def rs
         {
+            user_id: id,
             fullname: fullname,
             email: email,
             external_uid: external_uid,

@@ -1,5 +1,5 @@
 class V1::UsersController < V1::BaseController
-    before_action :get_current_user, except: [:create]
+    before_action :get_current_user, except: [:update]
     
 
     ################# API DOCUMENTATION BEGIN #############
@@ -21,15 +21,14 @@ class V1::UsersController < V1::BaseController
     # end
     # returns :code => 409, :desc => "User already exists with this Google Authentication Token or Email"
     # returns :code => 422, :desc => "Google Authentication Token not found"
-    def create
+    def update
         auth_token = params[:gauth_id]
         email = params[:email]
-        user = User.where(external_uid: auth_token).or(User.where(email: email))
+        user = User.where(external_uid: auth_token).or(User.where(email: email)).first
         if user.present?
-            render json: {is_success: false, data: {}, message: 'User already exists with this Google Authentication Token or Email'}, status: 409
-        end
-
-        if auth_token && email && !(user.present?)
+            #render json: {is_success: false, data: {}, message: 'User already exists with this Google Authentication Token or Email'}, status: 409
+            render json: {is_success: true, data: user.rs, message: 'User Present'}, status: 200
+        elsif auth_token && email && !(user.present?)
             user = User.create!({
                 fullname: params[:fullname],
                 email: email,
@@ -44,6 +43,17 @@ class V1::UsersController < V1::BaseController
                 render json: {is_success: false, data: {}, message: 'User Email not found'}, status: 422
             end
         end
+    end
+
+    def dashboard
+        data = {
+            user_id: @current_user.id, 
+            assessment_count: rand(1..100),
+            avg_score: rand(1..100),
+            highest_score: rand(90..100),
+        }
+        render json: {is_success: true, data: data, message: ''}, status: 200
+
     end
 
 
