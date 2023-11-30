@@ -1,0 +1,33 @@
+development:
+  base_url: 'http://sparkdev.gofrontlyne.com/'
+  s3_bucket_name: 'rxp-spark-data-store'
+  s3_url: 'https://rxp-spark-data-store.s3.ap-south-1.amazonaws.com/'
+  cdn_url: 'https://rxpspark.b-cdn.net/'
+  AWS_ACCESS_KEY: "AKIARPAMHEBXD44XGHWC"
+  AWS_SECRET_ACCESS_KEY: "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"
+  2FACTOR_API_KEY: '1a7e3c65-6dc2-11ea-9fa5-0200cd936042'
+  SENDGRID_API_KEY: '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'
+  FCM_SECRET_KEY: "AAAAm0PWYUg:APA91bHD4i-JVX36XRqX0Sn5frNT9benAdEi1iH1qdVNCZSHEhSFCdt6wZGNJHbfzhbe8u-I7IpWKI5-txv9RwrbugL_t_ftB0-viqtxu-QqUHHg31pgx6RLNgHEPzxi9FwMufZT3alH"
+  SECRET_BASE: '8ef28c134100a1430802b3308a7babee'
+
+test:
+  base_url: 'http://sparktest.gofrontlyne.com/'
+  s3_bucket_name: 'rxp-spark-data-store'
+  s3_url: 'https://rxp-spark-data-store.s3.ap-south-1.amazonaws.com/'
+  cdn_url: 'https://rxpspark.b-cdn.net/'
+  AWS_ACCESS_KEY: "AKIARPAMHEBXD44XGHWC"
+  AWS_SECRET_ACCESS_KEY: "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"
+  2FACTOR_API_KEY: '1a7e3c65-6dc2-11ea-9fa5-0200cd936042'
+  SENDGRID_API_KEY: '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'
+  FCM_SECRET_KEY: "AAAADPjruPw:APA91bE5yACM-DjnDDU_-3RAjH_bUw8y1tNAxhjiE8uj_eLWDsWCxsEPxoUK4IgmcWRZkb4xwrzeytioydBKkqE5k4PiDjYjyO3JH159CS5bYrtOITYJX2OCXwgJRBYIringec4yl37J"
+
+production:
+  base_url: 'https://spark.gofrontlyne.com/'
+  s3_bucket_name: 'rxp-spark-data-store'
+  s3_url: 'https://rxp-spark-data-store.s3.ap-south-1.amazonaws.com/'
+  cdn_url: 'https://rxpspark.b-cdn.net/'
+  AWS_ACCESS_KEY: "AKIARPAMHEBXD44XGHWC"
+  AWS_SECRET_ACCESS_KEY: "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"
+  2FACTOR_API_KEY: '1a7e3c65-6dc2-11ea-9fa5-0200cd936042'
+  SENDGRID_API_KEY: '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'
+  FCM_SECRET_KEY: "AAAADPjruPw:APA91bE5yACM-DjnDDU_-3RAjH_bUw8y1tNAxhjiE8uj_eLWDsWCxsEPxoUK4IgmcWRZkb4xwrzeytioydBKkqE5k4PiDjYjyO3JH159CS5bYrtOITYJX2OCXwgJRBYIringec4yl37J"

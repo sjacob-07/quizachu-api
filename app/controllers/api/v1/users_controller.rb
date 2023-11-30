@@ -3,24 +3,24 @@ class Api::V1::UsersController < Api::V1::BaseController
     
 
     ################# API DOCUMENTATION BEGIN #############
-    def_param_group :create_user do
-        param :gauth_id, String, desc: 'Unique Identifier from the Google OAuth for the user', required: true
-        param :email, String, desc: 'Unique Email of the created user',required: true
-        param :fullname, String, desc: 'Fullname or the user name of the required user',required: true
-        param :profile_picture_url, String, desc: 'URL of the profile picture'
-    end
+    # def_param_group :create_user do
+    #     param :gauth_id, String, desc: 'Unique Identifier from the Google OAuth for the user', required: true
+    #     param :email, String, desc: 'Unique Email of the created user',required: true
+    #     param :fullname, String, desc: 'Fullname or the user name of the required user',required: true
+    #     param :profile_picture_url, String, desc: 'URL of the profile picture'
+    # end
 
 
 
 
     ################# METHODS BEGIN #############
-    api :POST, '/users', "Create a User"
-    param_group :create_user
-    returns :code => 200, :desc => "User successfully created" do
-        param_group :create_user
-    end
-    returns :code => 409, :desc => "User already exists with this Google Authentication Token or Email"
-    returns :code => 422, :desc => "Google Authentication Token not found"
+    # api :POST, '/users', "Create a User"
+    # param_group :create_user
+    # returns :code => 200, :desc => "User successfully created" do
+    #     param_group :create_user
+    # end
+    # returns :code => 409, :desc => "User already exists with this Google Authentication Token or Email"
+    # returns :code => 422, :desc => "Google Authentication Token not found"
     def create
         auth_token = params[:gauth_id]
         email = params[:email]
