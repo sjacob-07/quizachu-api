@@ -1,4 +1,4 @@
-class Api::V1::BaseController < ActionController::API
+class V1::BaseController < ActionController::API
 	rescue_from StandardError,                with: :internal_server_error
 	rescue_from ActiveRecord::RecordNotFound, with: :not_found
 	#helper :all
