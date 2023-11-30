@@ -1,4 +1,4 @@
-class V1::UsersController < Api::V1::BaseController
+class V1::UsersController < V1::BaseController
     before_action :get_current_user, except: [:create]
     
 
