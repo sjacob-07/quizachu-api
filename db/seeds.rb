@@ -30,7 +30,7 @@ images = ["https://rxpspark.b-cdn.net/setup/security_images/fp_001.jpg",
 
 
 25.times.each do |i|
-    User.create({
+    User.create!({
         fullname: Faker::Name.name,
         email: Faker::Internet.email,
         external_uid: Faker::Alphanumeric.unique.alpha(number: 10),

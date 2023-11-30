@@ -15,7 +15,7 @@ localhost_crt = "#{File.join('config', 'local-certs', 'fullchain.pem')}"
 workers 1
 # Min and Max threads per worker
 threads 1, 6
-app_dir = '/home/ubuntu/apps/quizachu/quizachu-api'
+app_dir = '/home/ubuntu/apps/prod/quizachu-api'
 shared_dir = "#{app_dir}/shared"
 # Default to production
 rails_env = ENV['RAILS_ENV'] || "production"
