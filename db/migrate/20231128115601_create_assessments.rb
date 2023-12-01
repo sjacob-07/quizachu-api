@@ -2,7 +2,9 @@ class CreateAssessments < ActiveRecord::Migration[6.1]
   def change
     create_table :assessments do |t|
       t.string :title
-      t.string :description
+      t.text :description
+      t.text :category
+      t.string :duration
       t.string :image_url
       t.text :context
       t.integer :passmark

@@ -2,10 +2,12 @@ class CreateAssessmentOptions < ActiveRecord::Migration[6.1]
   def change
     create_table :assessment_options do |t|
       t.references :assessment_question, null: false, foreign_key: true
+      t.references :assessment, null: false, foreign_key: true
+      
       t.string :option
       t.string :option_attachment
       t.string :option_attachment_caption
-      t.integer :option_seq
+      t.integer :order_seq
       t.boolean :is_correct_option, default: false
       t.string :option_type
       t.boolean :is_active, default: true

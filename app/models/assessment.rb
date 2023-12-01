@@ -8,6 +8,8 @@ class Assessment < ApplicationRecord
         {
             title: title,
             description: description,
+            duration: duration,
+            category: category,
             passmark: passmark,
             image_url: image_url,
             ques_count: ques_count,
@@ -15,5 +17,10 @@ class Assessment < ApplicationRecord
             created_by_id: User.all.sample.rs,
             created_at: created_at.strftime("%d/%m/%Y %H:%M"),
         }
+    end
+
+    def rs
+        data = self.short_rs
+        data[:questions] = self.questions.order(:order_seq).map(&:rs)
     end
 end

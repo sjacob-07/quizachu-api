@@ -4,6 +4,7 @@ class CreateAssessmentQuestions < ActiveRecord::Migration[6.1]
       t.text :question
       t.text :question_type
       t.text :question_description
+      t.integer :order_seq
 
       t.boolean :model_generated
       t.datetime :generated_at

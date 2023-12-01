@@ -8,5 +8,6 @@ Rails.application.routes.draw do
     post 'users', to: 'users#update'
     get 'user/:user_id/dashboard', to: 'users#dashboard'
     get '/assessments', to: 'assessments#index'
+    get '/assessments/:assessment_id', to: 'assessments#show'
   end
 end

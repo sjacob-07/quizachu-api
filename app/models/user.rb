@@ -1,5 +1,6 @@
 class User < ApplicationRecord
     default_scope { where(deleted_at: nil) }
+    has_one :user_role
     
     def rs
         {
@@ -8,6 +9,7 @@ class User < ApplicationRecord
             email: email,
             external_uid: external_uid,
             profile_picture_url: profile_picture_url,
+            user_role: self.user_role&.role_master&.name
         }  
     end
 end

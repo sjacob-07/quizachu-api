@@ -3,4 +3,13 @@ class AssessmentOption < ApplicationRecord
 
     belongs_to :assessment_question
 
+    def rs
+        op = (self.assessment_question.question_type == "MCQ" || self.assessment_question.question_type == "MRQ") ? option : ""
+        {
+            option_id: id,
+            option: op,
+            order_seq: order_seq,
+        }
+    end
+
 end

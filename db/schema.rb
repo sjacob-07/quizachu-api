@@ -17,10 +17,11 @@ ActiveRecord::Schema.define(version: 2023_11_28_122619) do
 
   create_table "assessment_options", force: :cascade do |t|
     t.bigint "assessment_question_id", null: false
+    t.bigint "assessment_id", null: false
     t.string "option"
     t.string "option_attachment"
     t.string "option_attachment_caption"
-    t.integer "option_seq"
+    t.integer "order_seq"
     t.boolean "is_correct_option", default: false
     t.string "option_type"
     t.boolean "is_active", default: true
@@ -29,6 +30,7 @@ ActiveRecord::Schema.define(version: 2023_11_28_122619) do
     t.datetime "generated_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["assessment_id"], name: "index_assessment_options_on_assessment_id"
     t.index ["assessment_question_id"], name: "index_assessment_options_on_assessment_question_id"
   end
 
@@ -36,6 +38,7 @@ ActiveRecord::Schema.define(version: 2023_11_28_122619) do
     t.text "question"
     t.text "question_type"
     t.text "question_description"
+    t.integer "order_seq"
     t.boolean "model_generated"
     t.datetime "generated_at"
     t.bigint "assessment_id", null: false
@@ -48,7 +51,10 @@ ActiveRecord::Schema.define(version: 2023_11_28_122619) do
 
   create_table "assessments", force: :cascade do |t|
     t.string "title"
-    t.string "description"
+    t.text "description"
+    t.text "category"
+    t.string "duration"
+    t.string "image_url"
     t.text "context"
     t.integer "passmark"
     t.string "status"
@@ -131,6 +137,7 @@ ActiveRecord::Schema.define(version: 2023_11_28_122619) do
   end
 
   add_foreign_key "assessment_options", "assessment_questions"
+  add_foreign_key "assessment_options", "assessments"
   add_foreign_key "assessment_questions", "assessments"
   add_foreign_key "assessments", "users", column: "created_by_id"
   add_foreign_key "user_assessment_responses", "assessment_questions"

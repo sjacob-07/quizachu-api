@@ -35,6 +35,9 @@ class V1::UsersController < V1::BaseController
                 external_uid: auth_token,
                 profile_picture_url: params[:profile_picture_url],
             })
+            role = RoleMaster.where(name: "Participant").first
+            UserRole.create(user_id: user.id, role_master_id: role.id)
+            
             render json: {is_success: true, data: user.rs, message: 'User successfully created'}, status: 200
         else
             if !(auth_token.present?)
