@@ -9,5 +9,6 @@ Rails.application.routes.draw do
     get 'user/:user_id/dashboard', to: 'users#dashboard'
     get '/assessments', to: 'assessments#index'
     get '/assessments/:assessment_id', to: 'assessments#show'
+    get '/assessments/create', to: 'assessments#create'
   end
 end

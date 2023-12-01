@@ -6,6 +6,7 @@ class Assessment < ApplicationRecord
 
     def short_rs 
         {
+            assessment_id: id,
             title: title,
             description: description,
             duration: duration,

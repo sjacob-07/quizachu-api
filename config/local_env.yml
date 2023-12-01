@@ -1,8 +1,8 @@
 development:
-  base_url: 'http://sparkdev.gofrontlyne.com/'
+  base_url: 'http://localhost:3000.com/'
  
 test:
-  base_url: 'http://sparktest.gofrontlyne.com/'
+  base_url: 'http://localhost:3000.com/'
  
 production:
   base_url: 'https://quizachu.gofrontlyne.com/'
