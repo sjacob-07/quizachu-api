@@ -5,4 +5,17 @@ class UserAssessment < ApplicationRecord
     belongs_to :assessment
 
     has_many :user_assessment_responses
+
+    def short_rs
+        {
+            user_assessment_id: id,
+            assessment_id: self.assessment.id,
+            marks_obtained: marks_obtained,
+            percentage: percentage,
+            attempts_taken: attempts_taken,
+            is_passed: is_passed,
+            started_at: started_at,
+            completed_on: completed_on,
+        }
+    end
 end
