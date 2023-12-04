@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_28_122619) do
+ActiveRecord::Schema.define(version: 2023_12_04_112802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,8 +93,11 @@ ActiveRecord::Schema.define(version: 2023_11_28_122619) do
     t.datetime "evaluated_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_assessment_id"
+    t.decimal "similarity_score"
     t.index ["assessment_id"], name: "index_user_assessment_responses_on_assessment_id"
     t.index ["assessment_question_id"], name: "index_user_assessment_responses_on_assessment_question_id"
+    t.index ["user_assessment_id"], name: "index_user_assessment_responses_on_user_assessment_id"
     t.index ["user_id"], name: "index_user_assessment_responses_on_user_id"
   end
 
@@ -142,6 +145,7 @@ ActiveRecord::Schema.define(version: 2023_11_28_122619) do
   add_foreign_key "assessments", "users", column: "created_by_id"
   add_foreign_key "user_assessment_responses", "assessment_questions"
   add_foreign_key "user_assessment_responses", "assessments"
+  add_foreign_key "user_assessment_responses", "user_assessments"
   add_foreign_key "user_assessment_responses", "users"
   add_foreign_key "user_assessments", "assessments"
   add_foreign_key "user_assessments", "users"

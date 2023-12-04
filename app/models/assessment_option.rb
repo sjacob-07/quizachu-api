@@ -12,4 +12,11 @@ class AssessmentOption < ApplicationRecord
         }
     end
 
+    def preview_rs
+        {
+            option_id: id,
+            option: self.option
+        }
+    end
+
 end

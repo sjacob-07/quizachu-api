@@ -4,13 +4,15 @@ class UserAssessment < ApplicationRecord
     belongs_to :user
     belongs_to :assessment
 
-    has_many :user_assessment_responses
+    has_many :responses, :class_name => 'UserAssessmentResponse', :foreign_key => 'user_assessment_id'
+
+    #has_many :user_assessment_responses
 
     def short_rs
         {
             user_assessment_id: id,
             assessment_id: self.assessment.id,
-            assessment_details: self.assessment.short_rs
+            assessment_details: self.assessment.short_rs,
             marks_obtained: marks_obtained,
             percentage: percentage,
             attempts_taken: attempts_taken,
@@ -18,5 +20,10 @@ class UserAssessment < ApplicationRecord
             started_at: started_at,
             completed_on: completed_on,
         }
+    end
+
+    def preview_rs
+        self.responses.ma
+
     end
 end

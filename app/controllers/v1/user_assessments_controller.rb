@@ -36,7 +36,8 @@ class V1::UserAssessmentsController < V1::BaseController
                             user_id: @current_user.id,
                             assessment_id: a.id,
                             assessment_question_id: ques.id,
-                            started_at: DateTime.now,   
+                            started_at: DateTime.now, 
+                            user_assessment_id: ua.id  
                         )
                 end
 
@@ -65,6 +66,23 @@ class V1::UserAssessmentsController < V1::BaseController
         end
 
         render json: {is_success: true, data: ua.short_rs, message: 'Assessment Response successfully submitted'}, status: 200
+    end
+
+    def view_answers
+        a_id = params.has_key?(:assessment_id) ? params[:assessment_id]  : nil
+        if !a_id.present?
+            render json: {is_success: false, data: {}, message: 'Assessment ID not found'}, status: 409
+        end
+
+        ua = UserAssessment.where(user_id: @current_user.id, assessment_id: a_id).first
+        if !ua.present?
+            render json: {is_success: false, data: {}, message: 'User has not attempted this assessment'}, status: 409
+        end
+
+        data = ua.responses.map(&:result_rs)
+
+        render json: {is_success: true, data: data, message: 'Successful'}, status: 200
+
     end
 
 end

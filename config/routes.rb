@@ -12,5 +12,6 @@ Rails.application.routes.draw do
     post '/assessments/create', to: 'assessments#create'
 
     post '/user/assessment/:assessment_id/submit', to: 'user_assessments#submit_answers'
+    get '/user/assessment/:assessment_id/results', to: 'user_assessments#view_answers'
   end
 end
