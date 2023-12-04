@@ -25,9 +25,8 @@ class Assessment < ApplicationRecord
     end
     
     
-    def long_rs(current_user)
+    def long_rs
         data = self.short_rs
-        data[:current_user_role] = current_user.user_role&.role_master&.name
         data.merge!(leaderboard_data)
 
         return data
