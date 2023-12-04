@@ -22,8 +22,5 @@ class UserAssessment < ApplicationRecord
         }
     end
 
-    def preview_rs
-        self.responses.ma
-
-    end
+    
 end

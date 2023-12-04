@@ -17,11 +17,27 @@ class Assessment < ApplicationRecord
             is_active: true,
             created_by_id: User.all.sample.rs,
             created_at: created_at.strftime("%d/%m/%Y %H:%M"),
+            leaderboard_data: leaderboard_data
         }
     end
 
     def rs
         data = self.short_rs
         data[:questions] = self.questions.order(:order_seq).map(&:rs)
+    end
+
+    def leaderboard_data
+        data = []
+        uas = UserAssessment.where(assessment_id: id, is_passed: true).order(:percentage, "DESC")[0..4]
+        uas.each do |ua|
+            d = {
+                percentage: ua.percentage,
+                marks_obtained: ua.marks_obtained,
+                user_details: ua.user.rs
+            }
+
+            data << d
+        end
+        return data
     end
 end
