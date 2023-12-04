@@ -11,12 +11,12 @@ class UserAssessmentResponse < ApplicationRecord
         {
             assessment_question_id: self.assessment_question.id,
             assessment_question: self.assessment_question.question,
-            answers: self.assessment_question.options.map(&:preview_rs)
+            answers: self.assessment_question.options.map(&:preview_rs),
             user_assessment_response_id: id,
             user_assessment_respone: user_answer,
             is_answered: is_answered,
             is_correct: is_correct,
-            similarity_score: similarity_score,
+            similarity_score: similarity_score.to_i,
         }
     end
 end

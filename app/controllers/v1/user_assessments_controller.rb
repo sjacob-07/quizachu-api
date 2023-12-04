@@ -47,8 +47,15 @@ class V1::UserAssessmentsController < V1::BaseController
                     is_correct: [true,false].sample,
                     completed_on: DateTime.now,
                 )
+
+                if uar.is_correct
+                    uar.update(similarity_score: rand(75..100))
+                else
+                    uar.update(similarity_score: rand(1..74))
+                end
             end
         end
+
 
         ques_count = a.ques_count
         correct_answers = UserAssessmentResponse.where(user_id: @current_user.id, assessment_id: a.id, is_correct: true)
