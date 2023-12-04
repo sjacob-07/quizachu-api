@@ -3,8 +3,9 @@ class V1::AssessmentsController < V1::BaseController
 
     def index
         as = Assessment.where(is_active: true, status: "PUBLISHED")
-        data = as.map(&:long_rs)
-        data[0][:current_user_role] = @current_user.user_role&.role_master&.name
+        data = Hash.new
+        data[:current_user_role]  = @current_user.user_role&.role_master&.name
+        data[:assessments] = as.map(&:long_rs)
         render json: {is_success: true, data: data, message: ''}, status: 200
     end
 
