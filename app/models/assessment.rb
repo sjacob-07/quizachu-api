@@ -21,7 +21,7 @@ class Assessment < ApplicationRecord
     end
 
     def rs
+        data = self.short_rs
         data[:questions] = self.questions.order(:order_seq).map(&:rs)
-        data = data.merge(self&.short_rs)
     end
 end

@@ -8,7 +8,7 @@ class V1::AssessmentsController < V1::BaseController
     end
 
     def show
-        a_id =  params.has_key?(:assessment_id)? params[:assessment_id].to_i  : nil
+        a_id =  params.has_key?(:assessment_id) ? params[:assessment_id].to_i  : nil
         if !a_id.present?
             render json: {is_success: false, data: {}, message: 'Assessment not found! Please check assessment ID'}, status: 409
         end
