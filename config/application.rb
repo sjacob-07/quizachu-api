@@ -23,5 +23,17 @@ module QuizachuApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    ## SETTING UP LINK TO ENV FILE
+    env_file = File.join(Rails.root, 'config', 'local_env.yml')
+    if File.exists?(env_file)
+        YAML.load(File.open(env_file)).each do |environment, variable_hash|
+          if Rails.env == environment
+            variable_hash.each do |key,value|
+              ENV[key.to_s] = value
+            end
+          end
+        end
+    end
   end
 end

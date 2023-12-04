@@ -1,8 +1,8 @@
 development:
-  base_url: 'http://localhost:3000.com/'
+  base_url: 'https://quizachu-backend-h67ch72r3q-ew.a.run.app/'
  
 test:
-  base_url: 'http://localhost:3000.com/'
+  base_url: 'https://quizachu-backend-h67ch72r3q-ew.a.run.app/'
  
 production:
-  base_url: 'https://quizachu.gofrontlyne.com/'
+  base_url: 'https://quizachu-backend-h67ch72r3q-ew.a.run.app/'
