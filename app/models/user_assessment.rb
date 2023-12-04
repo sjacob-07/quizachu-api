@@ -10,6 +10,7 @@ class UserAssessment < ApplicationRecord
         {
             user_assessment_id: id,
             assessment_id: self.assessment.id,
+            assessment_details: self.assessment.short_rs
             marks_obtained: marks_obtained,
             percentage: percentage,
             attempts_taken: attempts_taken,

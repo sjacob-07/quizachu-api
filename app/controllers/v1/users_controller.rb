@@ -49,11 +49,15 @@ class V1::UsersController < V1::BaseController
     end
 
     def dashboard
+        uas = UserAssessment.where(user_id: @current_user.id)
+        avg_score = uas.pluck(:percentage)/uas.count.to_f
+        highest_score = uas.pluck(:percentage).sort.reverse[0]
         data = {
             user_id: @current_user.id, 
-            assessment_count: rand(1..100),
-            avg_score: rand(1..100),
-            highest_score: rand(90..100),
+            assessment_count: uas.count,
+            avg_score: avg_score.present? ? avg_score : nil ,
+            highest_score: highest_score.present? ?highest_score : nil ,
+            history: uas.map(&short_rs)
         }
         render json: {is_success: true, data: data, message: ''}, status: 200
 

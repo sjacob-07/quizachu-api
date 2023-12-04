@@ -51,15 +51,17 @@ class V1::UserAssessmentsController < V1::BaseController
 
         ques_count = a.ques_count
         correct_answers = UserAssessmentResponse.where(user_id: @current_user.id, assessment_id: a.id, is_correct: true)
-        perct = ((correct_answers.count/ ques_count) * 100.0).round(2)
+        perct = ((correct_answers.count.to_f/ ques_count.to_f) * 100.0).round(2)
 
         if perct > ua.percentage.to_i
-            ua.update(marks_obtained: correct_answers.count, percentage: perct)
+            ua.update!(marks_obtained: correct_answers.count, percentage: perct)
         end
-        ua.update(attempts_taken: ua.attempts_taken + 1)
+        ua.update(attempts_taken: ua .attempts_taken + 1)
 
         if ua.percentage.to_i >= a.passmark.to_i && ua.is_passed != true
             ua.update(is_passed: true, completed_on: DateTime.now)
+        elsif ua.is_passed == nil
+            ua.update(is_passed: false, completed_on: DateTime.now)
         end
 
         render json: {is_success: true, data: ua.short_rs, message: 'Assessment Response successfully submitted'}, status: 200
