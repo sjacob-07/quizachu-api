@@ -10,12 +10,14 @@ class V1::AssessmentsController < V1::BaseController
     def show
         a_id =  params.has_key?(:assessment_id) ? params[:assessment_id].to_i  : nil
         if !a_id.present?
-            render json: {is_success: false, data: {}, message: 'Assessment not found! Please check assessment ID'}, status: 409
+            render json: {is_success: false, data: {}, message: 'Assessment ID not present.'}, status: 409
         end
-        assessment = Assessment.where(id: a_id, status: "PUBLISHED").first
+        assessment = Assessment.where(id: a_id, status: "PUBLISHED", is_active: true).first
         if assessment.present?
             data = assessment.rs
             render json: {is_success: true, data: data, message: ''}, status: 200
+        else
+            render json: {is_success: false, data: {}, message: 'Assessment not found! Please check assessment ID'}, status: 409
         end
     end
 
@@ -52,12 +54,14 @@ class V1::AssessmentsController < V1::BaseController
     def details
         a_id =  params.has_key?(:assessment_id) ? params[:assessment_id].to_i  : nil
         if !a_id.present?
-            render json: {is_success: false, data: {}, message: 'Assessment not found! Please check assessment ID'}, status: 409
+            render json: {is_success: false, data: {}, message: 'Assessment ID not present.'}, status: 409
         end
-        assessment = Assessment.where(id: a_id, status: "PUBLISHED").first
+        assessment = Assessment.where(id: a_id, status: "PUBLISHED", is_active: true).first
         if assessment.present?
-            data = assessment.rs
+            data = assessment.preview_rs
             render json: {is_success: true, data: data, message: ''}, status: 200
+        else
+            render json: {is_success: false, data: {}, message: 'Assessment not found! Please check assessment ID'}, status: 409
         end
 
     end
