@@ -5,7 +5,7 @@ class Assessment < ApplicationRecord
 
     def rs
         data = self.short_rs
-        data[:questions] = self.questions.order(:order_seq).map(&:rs)
+        data[:questions] = self.questions.where(question_type: ["SHORT_ANSWER", "LONG_ANSWER"]).order(:order_seq).map(&:rs)
     end
 
     def short_rs 
@@ -19,7 +19,7 @@ class Assessment < ApplicationRecord
             image_url: image_url,
             ques_count: ques_count,
             is_active: true,
-            created_by_id: User.all.sample.rs,
+            created_by_id: User.where(id: created_by_id).first&.rs,
             created_at: created_at.strftime("%d/%m/%Y %H:%M"),
         }
     end
@@ -29,6 +29,12 @@ class Assessment < ApplicationRecord
         data = self.short_rs
         data.merge!(leaderboard_data)
 
+        return data
+    end
+
+    def preview_rs
+        data = self.short_rs
+        data["questions"] = self.questions.where(question_type: ["SHORT_ANSWER", "LONG_ANSWER"]).order(:order_seq).map(&:preview_rs)
         return data
     end
 

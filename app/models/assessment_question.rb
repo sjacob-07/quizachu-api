@@ -14,4 +14,17 @@ class AssessmentQuestion < ApplicationRecord
             options: self.options.order(:order_seq).map(&:rs)
         }
     end
+
+    def preview_rs
+        {
+            question_id: id,
+            question: question,
+            question_type: question_type,
+            question_description: question_description,
+            order_seq: order_seq,
+            options: self.options.order(:order_seq).map(&:preview_rs),
+            confidence_score: confidence_score.present? ? (confidence_score.to_f).round(2)  : ""
+        }
+
+    end
 end
