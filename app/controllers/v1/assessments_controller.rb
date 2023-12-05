@@ -1,3 +1,7 @@
+require "uri"
+require "json"
+require "net/http"
+
 class V1::AssessmentsController < V1::BaseController
     before_action :get_current_user
 
@@ -64,7 +68,7 @@ class V1::AssessmentsController < V1::BaseController
             "context": assessment.context})
 
             response = https.request(request)
-            res = JSON.parse(response)
+            res = JSON.parse(response.body)
 
             res["questions"].each do |k,v|
                 aq = AssessmentQuestion.create(
