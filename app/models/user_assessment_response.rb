@@ -16,9 +16,8 @@ class UserAssessmentResponse < ApplicationRecord
             user_assessment_respone: user_answer,
             is_answered: is_answered,
             is_correct: is_correct,
-            similarity_score: similarity_score.to_i,
             answer_evaluation_label: answer_evaluation_label,
-            probability_score: probability_score.to_i
+            probability_score: "#{(probability_score.to_f*100)}"
         }
     end
 end
