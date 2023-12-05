@@ -69,7 +69,7 @@ class V1::UserAssessmentsController < V1::BaseController
                     response = https.request(request)
                     if response.code.to_i == 200
                         res = JSON.parse(response.body)
-                        uar.update(
+                        uar.update!(
                             answer_evaluation_label: res["prediction"],
                             probability_score: res["probability"],
                             model_evaluated: true,
@@ -79,6 +79,10 @@ class V1::UserAssessmentsController < V1::BaseController
                         if uar.answer_evaluation_label == "entailment" && uar.probability_score.to_i >= 75
                             uar.update(
                                 is_correct: true,
+                            )
+                        else
+                            uar.update(
+                                is_correct: false,
                             )
                         end
                     end
