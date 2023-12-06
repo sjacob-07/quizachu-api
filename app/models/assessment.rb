@@ -35,6 +35,7 @@ class Assessment < ApplicationRecord
     def preview_rs
         data = self.short_rs
         data["questions"] = self.questions.where(question_type: ["SHORT_ANSWER", "LONG_ANSWER"]).order(:order_seq).map(&:preview_rs)
+        data["context"] = context
         return data
     end
 
@@ -100,5 +101,12 @@ class Assessment < ApplicationRecord
             ques_count = AssessmentQuestion.where(assessment_id: self.id).count
             self.update(ques_count: ques_count, status: "PUBLISHED")
         end
+    end
+
+    def delete_assessment
+        UserAssessmentResponse.where(assessment_id: self.id).update_all(deleted_at: DateTime.now)
+        UserAssessment.where(assessment_id: self.id).update_all(deleted_at: DateTime.now)
+        AssessmentQuestion.where(assessment_id: self.id).update_all(deleted_at: DateTime.now)
+        self.update(deleted_at: DateTime.now)
     end
 end

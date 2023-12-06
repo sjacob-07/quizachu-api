@@ -57,7 +57,7 @@ class V1::UsersController < V1::BaseController
             assessment_count: uas.count,
             avg_score: avg_score.present? ? avg_score : nil ,
             highest_score: highest_score.present? ? highest_score : nil ,
-            history: uas.map(&:short_rs)
+            history: uas.order("percentage DESC").map(&:short_rs)
         }
         render json: {is_success: true, data: data, message: ''}, status: 200
     end

@@ -13,13 +13,14 @@ namespace :assessments do
     task evaluate_user_answer: :environment do 
         puts "#{DateTime.now}-evaluate_user_answer"
         a_ids = Assessment.where(status: "PUBLISHED").pluck(:id)
-        uars = UserAssessmentResponse.where(assessment_id: a_ids, model_evaluated: nil).order(:created_at)
+        uars = UserAssessmentResponse.where(assessment_id: a_ids, evaluated_at: nil).order(:created_at)
         puts uars.count
         uar = uars.first
         
         if uar.present? 
+            uar.update(evaluated_at: DateTime.now)
             uar.evaluate_response
-            ua.calculate_result
+            uar&.user_assessment&.calculate_result
         end
         puts "------"
     end
