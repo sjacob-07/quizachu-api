@@ -118,7 +118,7 @@ class V1::AssessmentsController < V1::BaseController
 
     def publish
         a_id =  params.has_key?(:assessment_id) ? params[:assessment_id].to_i  : nil
-        data = params.has_key?(:data) ? params[:data].to_i  : nil
+        data = params.has_key?(:data) ? params[:data] : nil
         
         if !a_id.present? || !data.present?
             render json: {is_success: false, data: {}, message: 'Assessment ID or Data not present.'}, status: 409
@@ -138,7 +138,9 @@ class V1::AssessmentsController < V1::BaseController
                     end
                 end
             end
-            d_qids = AssessmentQuestion.where(assessment_id: assessment.id).where.not(id: ques_id).pluck(:id)
+
+            assessment.update(ques_count: ques_ids.count)
+            d_qids = AssessmentQuestion.where(assessment_id: assessment.id).where.not(id: ques_ids).pluck(:id)
             UserAssessmentResponse.where(assessment_question_id: d_qids).update_all(deleted_at: DateTime.now)
             AssessmentOption.where(assessment_question_id: d_qids).update_all(deleted_at: DateTime.now)
             AssessmentQuestion.where(id: d_qids).update_all(deleted_at: DateTime.now)

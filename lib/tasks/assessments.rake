@@ -47,7 +47,7 @@ namespace :assessments do
                         evaluated_at: DateTime.now
                     )
 
-                    if uar.answer_evaluation_label == "entailment" && uar.probability_score.to_i >= 75
+                    if uar.answer_evaluation_label == "entailment" && uar.probability_score.to_f >= 0.75
                         uar.update(
                             is_correct: true,
                         )

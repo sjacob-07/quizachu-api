@@ -8,6 +8,7 @@ class UserAssessmentResponse < ApplicationRecord
 
 
     def result_rs
+        label = answer_evaluation_label.present? ? (answer_evaluation_label == "entailment" ? "Similar" : answer_evaluation_label.titleize) : "Evaluation Pending"
         {
             assessment_question_id: self.assessment_question.id,
             assessment_question: self.assessment_question.question,
@@ -17,7 +18,7 @@ class UserAssessmentResponse < ApplicationRecord
             is_answered: is_answered,
             is_correct: is_correct,
             answer_evaluation_label: answer_evaluation_label,
-            probability_score: "#{(probability_score.to_f*100)}"
+            probability_score: probability_score.present ? "#{(probability_score.to_f*100)}%" : "NA"
         }
     end
 end
