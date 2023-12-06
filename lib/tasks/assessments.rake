@@ -13,14 +13,14 @@ namespace :assessments do
     task evaluate_user_answer: :environment do 
         puts "#{DateTime.now}-evaluate_user_answer"
         a_ids = Assessment.where(status: "PUBLISHED").pluck(:id)
-        uars = UserAssessmentResponse.where(assessment_id: a_ids, is_correct: nil).order(:created_at)
+        uars = UserAssessmentResponse.where(assessment_id: a_ids, model_evaluated: nil).order(:created_at)
         puts uars.count
         uar = uars.first
         
-        if uar.present?
-            uar.update(is_correct: false)
+        if uar.present? 
             gold_answer = uar&.assessment_question&.options&.first&.option
             a = uar.assessment
+            ua = uar.user_assessment
 
             if uar.user_answer.present? && gold_answer.present?
                 url = URI("https://quizachu-backend-h67ch72r3q-ew.a.run.app/score-answers")
@@ -48,13 +48,9 @@ namespace :assessments do
                     )
 
                     if uar.answer_evaluation_label == "entailment" && uar.probability_score.to_f >= 0.75
-                        uar.update(
-                            is_correct: true,
-                        )
+                        uar.update!(is_correct: true)
                     else
-                        uar.update(
-                            is_correct: false,
-                        )
+                        uar.update!(is_correct: false)
                     end
                 end
             end

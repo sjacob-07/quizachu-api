@@ -60,7 +60,6 @@ class V1::UsersController < V1::BaseController
             history: uas.map(&:short_rs)
         }
         render json: {is_success: true, data: data, message: ''}, status: 200
-
     end
 
 

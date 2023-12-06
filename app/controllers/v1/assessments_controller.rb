@@ -46,9 +46,8 @@ class V1::AssessmentsController < V1::BaseController
                 title: title,
                 description: description.present? ? description : "",
                 image_url: image_url,
-                passmark: passmark.present? ? passmark : rand(75..100),
+                passmark: rand(65..100),
                 status: "DRAFT",
-                ques_count: ques_count.present? ? ques_count : rand(1..10),
                 is_active: true,
                 category: category,
                 created_by_id: @current_user.id,
@@ -94,8 +93,8 @@ class V1::AssessmentsController < V1::BaseController
                 end
 
             end
-
-            assessment.update(status: "PUBLISHED")
+            ques_count = AssessmentQuestion.where(assessment_id: assessment.id).count
+            assessment.update(ques_count: ques_count, status: "PUBLISHED")
 
             render json: {is_success: true, data: assessment.short_rs, message: 'Assessment Created Successfully'}, status: 200
         end
@@ -139,11 +138,13 @@ class V1::AssessmentsController < V1::BaseController
                 end
             end
 
-            assessment.update(ques_count: ques_ids.count)
-            d_qids = AssessmentQuestion.where(assessment_id: assessment.id).where.not(id: ques_ids).pluck(:id)
-            UserAssessmentResponse.where(assessment_question_id: d_qids).update_all(deleted_at: DateTime.now)
-            AssessmentOption.where(assessment_question_id: d_qids).update_all(deleted_at: DateTime.now)
-            AssessmentQuestion.where(id: d_qids).update_all(deleted_at: DateTime.now)
+            if ques_ids.count != AssessmentQuestion.where(assessment_id: assessment.id).count
+                assessment.update(ques_count: ques_ids.count)
+                d_qids = AssessmentQuestion.where(assessment_id: assessment.id).where.not(id: ques_ids).pluck(:id)
+                UserAssessmentResponse.where(assessment_question_id: d_qids).update_all(deleted_at: DateTime.now)
+                AssessmentOption.where(assessment_question_id: d_qids).update_all(deleted_at: DateTime.now)
+                AssessmentQuestion.where(id: d_qids).update_all(deleted_at: DateTime.now)
+            end
 
             render json: {is_success: true, data: assessment.preview_rs, message: ''}, status: 200
         else
