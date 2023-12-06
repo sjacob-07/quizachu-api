@@ -49,5 +49,6 @@ group :development do
 end
 #gem 'apipie-rails'
 gem 'faker'
+gem 'whenever', require: false
 
 

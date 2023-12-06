@@ -23,6 +23,7 @@ class V1::UserAssessmentsController < V1::BaseController
                 attempts_taken: 0
             )
         end
+
         data.each do |d|
             q_id = d["question_id"]
             ques = AssessmentQuestion.where(id: q_id, assessment_id: a.id).first
@@ -47,63 +48,13 @@ class V1::UserAssessmentsController < V1::BaseController
                     user_answer_url: d["user_answer_url"],
                     is_answered: true,
                     completed_on: DateTime.now,
+                    is_correct: nil
                 )
-
-                gold_answer = uar&.assessment_question&.options&.first&.option
-
-                if uar.user_answer.present? && gold_answer.present?
-                    url = URI("https://quizachu-backend-h67ch72r3q-ew.a.run.app/score-answers")
-                    #url = URI(ENV["base_url"] + "generate-questions-and-answers")
-                    https = Net::HTTP.new(url.host, url.port)
-                    https.use_ssl = true
-                    # Set the read timeout (in seconds)
-                    https.read_timeout = 180  # for example, setting a 2-minute timeout
-
-                    request = Net::HTTP::Post.new(url)
-                    request["Content-Type"] = "application/json"
-                    request.body = JSON.dump({
-                        "sentence1": gold_answer,
-                        "sentence2": uar.user_answer,
-                    })
-
-                    response = https.request(request)
-                    if response.code.to_i == 200
-                        res = JSON.parse(response.body)
-                        uar.update!(
-                            answer_evaluation_label: res["prediction"],
-                            probability_score: res["probability"],
-                            model_evaluated: true,
-                            evaluated_at: DateTime.now
-                        )
-
-                        if uar.answer_evaluation_label == "entailment" && uar.probability_score.to_i >= 75
-                            uar.update(
-                                is_correct: true,
-                            )
-                        else
-                            uar.update(
-                                is_correct: false,
-                            )
-                        end
-                    end
-                end
             end
         end
-
-        ques_count = a.ques_count
-        correct_answers = UserAssessmentResponse.where(user_id: @current_user.id, assessment_id: a.id, is_correct: true)
-        perct = ((correct_answers.count.to_f/ ques_count.to_f) * 100.0).round(2)
-
-        if perct > ua.percentage.to_i
-            ua.update!(marks_obtained: correct_answers.count, percentage: perct)
-        end
         ua.update(attempts_taken: ua .attempts_taken + 1)
+        ua.update(completed_on: DateTime.now)
 
-        if ua.percentage.to_i >= a.passmark.to_i && ua.is_passed != true
-            ua.update(is_passed: true, completed_on: DateTime.now)
-        elsif ua.is_passed == nil
-            ua.update(is_passed: false, completed_on: DateTime.now)
-        end
 
         render json: {is_success: true, data: ua.short_rs, message: 'Assessment Response successfully submitted'}, status: 200
     end
