@@ -54,47 +54,7 @@ class V1::AssessmentsController < V1::BaseController
                 context: context
             )
 
-            url = URI("https://quizachu-backend-h67ch72r3q-ew.a.run.app/generate-questions-and-answers")
-            #url = URI(ENV["base_url"] + "generate-questions-and-answers")
-            https = Net::HTTP.new(url.host, url.port)
-            https.use_ssl = true
-            # Set the read timeout (in seconds)
-            https.read_timeout = 180  # for example, setting a 2-minute timeout
-
-            request = Net::HTTP::Post.new(url)
-            request["Content-Type"] = "application/json"
-            request.body = JSON.dump({
-            "context": assessment.context})
-
-            response = https.request(request)
-            res = JSON.parse(response.body)
-
-            res["questions"].each do |k,v|
-                aq = AssessmentQuestion.create(
-                    assessment_id: assessment.id,
-                    question: v,
-                    question_type: "SHORT_ANSWER",
-                    question_description: "",
-                    order_seq: k.to_i + 1,
-                    confidence_score: res["confidence_score"][k]
-                )
-        
-                if aq.present?
-                    AssessmentOption.create(
-                        assessment_id: assessment.id,
-                        assessment_question_id: aq.id,
-                        option: res["answers"][k],
-                        order_seq: 1,
-                        is_correct_option: true,
-                        option_type: "TEXT",
-                        model_generated: true,
-                        generated_at: DateTime.now
-                    )
-                end
-
-            end
-            ques_count = AssessmentQuestion.where(assessment_id: assessment.id).count
-            assessment.update(ques_count: ques_count, status: "PUBLISHED")
+            assessment.generate_questions
 
             render json: {is_success: true, data: assessment.short_rs, message: 'Assessment Created Successfully'}, status: 200
         end

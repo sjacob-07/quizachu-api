@@ -28,7 +28,7 @@ class UserAssessment < ApplicationRecord
         correct_answers = UserAssessmentResponse.where(user_assessment_id: id, is_correct: true)
         perct = ((correct_answers.count.to_f/ ques_count.to_f) * 100.0).round(2)
 
-        if perct > ua.percentage.to_i
+        if perct > self.percentage.to_i
             self.update!(marks_obtained: correct_answers.count, percentage: perct)
         end
 

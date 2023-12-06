@@ -38,8 +38,6 @@ class Assessment < ApplicationRecord
         return data
     end
 
-    
-
     def leaderboard_data
         data = Hash.new
         data[:leaderboard_data] = []
@@ -55,5 +53,52 @@ class Assessment < ApplicationRecord
             data[:leaderboard_data] << d
         end
         return data
+    end
+
+    def generate_questions
+        #API
+        url = URI("https://quizachu-backend-h67ch72r3q-ew.a.run.app/generate-questions-and-answers")
+        #url = URI(ENV["base_url"] + "generate-questions-and-answers")
+        https = Net::HTTP.new(url.host, url.port)
+        https.use_ssl = true
+        # Set the read timeout (in seconds)
+        https.read_timeout = 600  # for example, setting a 2-minute timeout
+
+        request = Net::HTTP::Post.new(url)
+        request["Content-Type"] = "application/json"
+        request.body = JSON.dump({
+        "context": self.context})
+
+        #RESPONSE
+        response = https.request(request)
+        if response.code.to_i == 200
+            res = JSON.parse(response.body)
+
+            res["questions"].each do |k,v|
+                aq = AssessmentQuestion.create(
+                    assessment_id: self.id,
+                    question: v,
+                    question_type: "SHORT_ANSWER",
+                    question_description: "",
+                    order_seq: k.to_i + 1,
+                    confidence_score: res["confidence_score"][k]
+                )
+        
+                if aq.present?
+                    AssessmentOption.create(
+                        assessment_id: self.id,
+                        assessment_question_id: aq.id,
+                        option: res["answers"][k],
+                        order_seq: 1,
+                        is_correct_option: true,
+                        option_type: "TEXT",
+                        model_generated: true,
+                        generated_at: DateTime.now
+                    )
+                end
+            end
+            ques_count = AssessmentQuestion.where(assessment_id: self.id).count
+            self.update(ques_count: ques_count, status: "PUBLISHED")
+        end
     end
 end
