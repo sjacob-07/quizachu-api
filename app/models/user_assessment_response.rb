@@ -17,7 +17,7 @@ class UserAssessmentResponse < ApplicationRecord
             user_assessment_respone: user_answer,
             is_answered: is_answered,
             is_correct: is_correct,
-            answer_evaluation_label: answer_evaluation_label,
+            answer_evaluation_label: label,
             probability_score: probability_score.present? ? "#{(probability_score.to_f*100)}%" : "NA"
         }
     end

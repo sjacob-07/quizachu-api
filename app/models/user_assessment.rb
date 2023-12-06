@@ -22,5 +22,21 @@ class UserAssessment < ApplicationRecord
         }
     end
 
+    def calculate_result
+        a = self.assessment
+        ques_count = a.ques_count
+        correct_answers = UserAssessmentResponse.where(user_assessment_id: id, is_correct: true)
+        perct = ((correct_answers.count.to_f/ ques_count.to_f) * 100.0).round(2)
+
+        if perct > ua.percentage.to_i
+            self.update!(marks_obtained: correct_answers.count, percentage: perct)
+        end
+
+        if self.percentage.to_i >= a.passmark.to_i && self.is_passed != true
+            self.update(is_passed: true)
+        elsif self.is_passed == nil
+            self.update(is_passed: false)
+        end
+    end
     
 end

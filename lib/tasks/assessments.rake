@@ -54,19 +54,7 @@ namespace :assessments do
                     end
                 end
             end
-            ques_count = a.ques_count
-            correct_answers = UserAssessmentResponse.where(user_id: uar.user_id, assessment_id: uar.assessment_id, is_correct: true)
-            perct = ((correct_answers.count.to_f/ ques_count.to_f) * 100.0).round(2)
-
-            if perct > ua.percentage.to_i
-                ua.update!(marks_obtained: correct_answers.count, percentage: perct)
-            end
-
-            if ua.percentage.to_i >= a.passmark.to_i && ua.is_passed != true
-                ua.update(is_passed: true)
-            elsif ua.is_passed == nil
-                ua.update(is_passed: false)
-            end
+            ua.calculate_result
         end
         puts "------"
     end
