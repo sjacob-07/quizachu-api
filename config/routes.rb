@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     get '/assessments', to: 'assessments#index'
     get '/assessments/:assessment_id', to: 'assessments#show'
     post '/assessments/create', to: 'assessments#create'
+    post '/assessments/:assessment_id/publish', to: 'assessments#publish'
     get '/assessments/:assessment_id/details', to: 'assessments#details'
 
     post '/user/assessment/:assessment_id/submit', to: 'user_assessments#submit_answers'

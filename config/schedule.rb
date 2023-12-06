@@ -21,6 +21,6 @@
 set :bundle_command, "/home/ubuntu/.rbenv/shims/bundle exec"
 set :output, 'log/whenever.log'
 
-every 10.second do
+every 1.minute do
     rake "assessments:evaluate_user_answer"
 end
